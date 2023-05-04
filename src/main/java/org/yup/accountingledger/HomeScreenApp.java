@@ -1,8 +1,12 @@
 package org.yup.accountingledger;
 
-public class AccountingLedgerApp {
+public class HomeScreen {
 
     public static void main(String[] args){
-        System.out.println(1);
+
+
+        
     }
+
+
 }
