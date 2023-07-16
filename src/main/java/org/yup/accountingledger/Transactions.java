@@ -2,6 +2,8 @@ package org.yup.accountingledger;
 
 
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Scanner;
@@ -19,11 +21,13 @@ public class Transactions {
         this.description = description;
         this.vendor = vendor;
         this.amount = amount;
+        this.date = LocalDate.now();
+        this.time = LocalTime.now();
 
     }
 
-    public static void add(Transactions deposit) {
-    }
+    //public static void add(Transactions deposit) {
+    //}
 
     public LocalDate getDate() {
         return date;
@@ -69,7 +73,7 @@ public class Transactions {
         System.out.println("Enter customer name: ");
         String vendor = bankScanner.nextLine();
 
-        System.out.println("Will you be depositing cash or check?: ");
+        System.out.println("Enter deposit information: ");
         String description = bankScanner.nextLine();
 
         System.out.println("Enter the amount you wish to deposit: ");
@@ -92,5 +96,22 @@ public class Transactions {
         return new Transactions(description, vendor, amount);
 
     }
+
+    public static void add(Transactions transaction) {
+        // Write transaction to file
+        try {
+            FileWriter writer = new FileWriter("transactions.csv", true);
+            writer.write(transaction.toString() + "\n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to file.");
+            e.printStackTrace();
+        }
+    }
+
+    public String toString() {
+        return String.format("%s|%s|%s|%s|%.2f", this.date.toString(), this.time.toString(),this.vendor, this.description,this.amount);
+    }
+
 
  }
