@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Transactions {
@@ -26,8 +27,6 @@ public class Transactions {
 
     }
 
-    //public static void add(Transactions deposit) {
-    //}
 
     public LocalDate getDate() {
         return date;
@@ -76,41 +75,42 @@ public class Transactions {
         System.out.println("Enter deposit information: ");
         String description = bankScanner.nextLine();
 
-        System.out.println("Enter the amount you wish to deposit: ");
+        System.out.println("Enter deposit amount: ");
         double amount = Double.parseDouble(bankScanner.nextLine());
 
-        Transactions transactions = new Transactions(description, vendor, amount);
-        return transactions;
+        return new Transactions(description, vendor, amount);
     }
 
     public static Transactions payment(Scanner bankScanner) {
         System.out.println("Enter customer name: ");
         String vendor = bankScanner.nextLine();
 
-        System.out.println("Enter payment description: ");
+        System.out.println("Enter withdrawal information: ");
         String description = bankScanner.nextLine();
 
-        System.out.println("Enter the amount you wish to pay: ");
+        System.out.println("Enter withdrawal amount: ");
         double amount = Double.parseDouble(bankScanner.nextLine());
 
+        amount = -amount;
         return new Transactions(description, vendor, amount);
 
     }
 
     public static void add(Transactions transaction) {
         // Write transaction to file
-        try {
-            FileWriter writer = new FileWriter("transactions.csv", true);
-            writer.write(transaction.toString() + "\n");
-            writer.close();
+        try(FileWriter writer = new FileWriter("transactions.csv", true)){
+            writer.write(transaction.toCSVString() + "\n");
         } catch (IOException e) {
             System.out.println("An error occurred while writing to file.");
             e.printStackTrace();
         }
     }
 
-    public String toString() {
-        return String.format("%s|%s|%s|%s|%.2f", this.date.toString(), this.time.toString(),this.vendor, this.description,this.amount);
+    public String toCSVString() {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        String sign = (amount >= 0) ? "+" : "-";
+        double absAmount = Math.abs(amount);
+        return String.format("%s | %s | %s | %s | %s%.2f", date, time.format(timeFormatter), vendor, description, sign, absAmount);
     }
 
 
