@@ -8,21 +8,22 @@ import java.util.Scanner;
 import static org.yup.accountingledger.AccountingLedger.displayAllEntries;
 
 public class HomeScreenApp {
-    public static void main(String[] args) {
 
 
+    // Displays a menu with different options for the user.
+    // This method also consist of calling other classes and their methods as well.
+    public static void homeScreenMenu(){
         Scanner bankScanner = new Scanner(System.in);
 
         boolean appRunning = true;
 
-
         while (appRunning) {
             System.out.println("Hello! Welcome to the Big Baller Bank, what would you like to do today? :^) ");
             System.out.println("Please type the appropriate character to proceed :) ");
-            System.out.println("(D) <--- Add Deposit");
-            System.out.println("(P) <--- Make a Payment");
-            System.out.println("(L) <--- Display the Ledger screen");
-            System.out.println("(X) <---  Exit");
+            System.out.println("(D) ---> Add Deposit");
+            System.out.println("(P) ---> Make a Payment");
+            System.out.println("(L) ---> Display the Ledger screen");
+            System.out.println("(X) --->  Exit");
             String option = bankScanner.nextLine().toUpperCase();
 
             switch (option) {
@@ -51,7 +52,6 @@ public class HomeScreenApp {
                 default -> System.out.println("Please choose an appropriate character.");
             }
         }
-
+      }
     }
-}
 

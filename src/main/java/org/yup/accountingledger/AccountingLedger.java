@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class AccountingLedger {
 
+    private ReportsHandler reportsHandler;
     private static ArrayList<Transactions> transactions = new ArrayList<>();
     private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -20,10 +21,8 @@ public class AccountingLedger {
         transactions.add(transaction);
     }
 
-    public ArrayList<Transactions> getTransactions() {
-        return transactions;
-    }
 
+    // This method reads and displays all transactions from my csv file when ran.
     public static void displayAllEntries() {
         System.out.println("Displaying all entries:");
 
@@ -57,6 +56,7 @@ public class AccountingLedger {
         }
     }
 
+    // This method reads and displays all deposit transactions only from my csv file when ran.
     public static void displayDepositEntries() {
         System.out.println("Displaying deposit entries:");
 
@@ -91,6 +91,8 @@ public class AccountingLedger {
             e.printStackTrace();
         }
     }
+
+    //  // This method reads and displays all payment/withdrawal transactions from my csv file when ran.
     public static void displayPaymentEntries() {
         System.out.println("Displaying payment entries:");
 
@@ -125,11 +127,9 @@ public class AccountingLedger {
             e.printStackTrace();
         }
     }
-    public static void runReports() {
-        System.out.println("Running pre-defined reports:");
-        // Implement the reports here
-    }
 
+
+    // A menu created which gives users different options to choose from.
     public static void ledgerScreen(Scanner bankScanner) {
         boolean appRunning = true;
         System.out.println("Welcome to the Ledger Screen! What would you like to do? ");
@@ -145,30 +145,22 @@ public class AccountingLedger {
             String option = bankScanner.nextLine().toUpperCase();
 
             switch (option) {
-                case "A":
-                    displayAllEntries();
-                    break;
-                case "D":
-                    displayDepositEntries();
-                    break;
-                case "P":
-                    displayPaymentEntries();
-                    break;
-                case "R":
-                    runReports();
-                    break;
-
-                case "H":
+                case "A" -> displayAllEntries();
+                case "D" -> displayDepositEntries();
+                case "P" -> displayPaymentEntries();
+                case "R" -> runReportsScreen();
+                case "H" -> {
                     // Exit
                     System.out.println("Returning to Home screen: ");
                     System.out.println("---------------------------------------------------");
                     appRunning = false;
-                    break;
-                default:
-                    System.out.println("Please choose an appropriate character.");
+                }
+                default -> System.out.println("Please choose an appropriate character.");
             }
         }
      }
+
+     // This method created my transactions.csv file. Where later I used to read from , call from and add to.
     public static void createTransactionsFile() {
         if(transactions.isEmpty()){
             System.out.println("Successfully added to Transactions! :) ");
@@ -190,6 +182,40 @@ public class AccountingLedger {
         }
     }
 
+    // Another menu created which gives users access to different options.
+    // This method is able to call the ReportsHandler class and their methods as well.
+    public static void runReportsScreen() {
+        ReportsHandler reportsHandler = new ReportsHandler(transactions);
+        Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Welcome to the Reports Menu! ");
+            System.out.println("(1) ---> Month To Date");
+            System.out.println("(2) ---> Previous Month");
+            System.out.println("(3) ---> Year To Date");
+            System.out.println("(4) ---> Previous Year");
+            System.out.println("(5) ---> Search by Vendor");
+            System.out.println("(B) ---> Return to the Ledger home screen");
+            System.out.println("(H) ---> Return to the Home screen");
+            System.out.println("Please chose an appropriate character: ");
+
+            String option = scanner.nextLine().toUpperCase();
+
+        switch (option) {
+            case "1" -> reportsHandler.runMonthToDateReport2();
+            case "2" -> reportsHandler.runPreviousMonthReport2();
+            case "3" -> reportsHandler.runYearToDateReport2();
+            case "4" -> reportsHandler.runPreviousYearReport2();
+            case "5" -> reportsHandler.runVendorSearchReport2();
+            case "B" ->  {
+                System.out.println("Returning to the Ledger home screen.");
+                System.out.println("---------------------------------------------------");
+            }
+            case "H" -> {
+                System.out.println("Returning to the main Home screen.");
+            }
+            default -> System.out.println("Invalid choice. Please try again.");
+        }
+    }
 }
 
 

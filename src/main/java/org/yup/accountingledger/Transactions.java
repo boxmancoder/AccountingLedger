@@ -17,6 +17,7 @@ public class Transactions {
     private String vendor;
     private double amount;
 
+    // The constructor for the Transactions class
     public Transactions(String description, String vendor, double amount) {
 
         this.description = description;
@@ -68,6 +69,8 @@ public class Transactions {
         this.amount = amount;
     }
 
+    // This method lets the user create a deposit once the app is running.
+    // It also asks for various information from the user too.
     public static Transactions deposit(Scanner bankScanner) {
         System.out.println("Enter customer name: ");
         String vendor = bankScanner.nextLine();
@@ -81,6 +84,8 @@ public class Transactions {
         return new Transactions(description, vendor, amount);
     }
 
+    // This method lets the user create a payment once the app is running.
+    // It also asks for various information from the user too.
     public static Transactions payment(Scanner bankScanner) {
         System.out.println("Enter customer name: ");
         String vendor = bankScanner.nextLine();
@@ -96,6 +101,7 @@ public class Transactions {
 
     }
 
+    // This method adds all transactions to a file created called "transactions.csv"
     public static void add(Transactions transaction) {
         // Write transaction to file
         try(FileWriter writer = new FileWriter("transactions.csv", true)){
@@ -106,6 +112,7 @@ public class Transactions {
         }
     }
 
+    // The CSV string method contains the transaction details in a specific format.
     public String toCSVString() {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         String sign = (amount >= 0) ? "+" : "-";
